@@ -3,18 +3,8 @@
 #include <string>
 #include <vector>
 
-// ============================================================================
-// INSTRUCTIONS
-// ============================================================================
-// 1. Implement the three functions below.
-// 2. You may use the main() function at the bottom to test your code locally.
-// 3. Do not change the function signatures.
-// ============================================================================
-
-// TODO: Implement this function to return a vector of strings
-// containing the names of everyone on your team.
+// Containing the names of everyone on your team.
 std::vector<std::string> GetTeamMembers() {
-  // Your code here
 
   std::vector<std::string> teamMembers;
   teamMembers.push_back("Caleb");
@@ -22,46 +12,38 @@ std::vector<std::string> GetTeamMembers() {
   return teamMembers;
 }
 
-// TODO: Implement this function to return a string that describes
-// the strategy your logic uses to bid (e.g., "We bid high early on").
+// Return a description of the strategy
 std::string GetStrategy() {
-  // Your code here
-  return "We bid low early on";
+  return "We bid 0 early on and high later";
 }
 
-// TODO: Implement the bidding logic.
-// parameters:
-//   rounds: The total number of rounds in the game.
-//   budget: The total points available to spend across all rounds.
-//   output_filename: The name of the file where the bids should be written.
-//
-// Logic:
-//   1. Calculate how much to bid in each round.
-//   2. Open 'output_filename' for writing.
-//   3. Write the bid for each round on a new line in the file.
-//
-// Constraints:
-//   - You must write exactly 'rounds' number of lines.
-//   - The sum of all bids must not exceed 'budget'.
-//   - Bids must be non-negative integers.
+// Bidding logic
 void GenerateBids(int rounds, int budget, std::string output_filename) {
-  // Your code here
   std::ofstream outfile(output_filename);
-  int bid_per_round = budget / rounds;
-  for (int i = 0; i < rounds; i++) {
+
+  // Cuts rounds in half and return 0 for the first half
+  int firstRounds = rounds / 2;
+
+  for (int i = 0; i < firstRounds; i++){
+    outfile << 0 << "\n";
+  }
+
+  // Bets high evenly for the remaining rounds
+  int bid_per_round = 0;
+  int lastRounds = rounds - firstRounds;
+  int remainder = budget % lastRounds;
+  int bets = budget / lastRounds;
+
+  for (int i = 0; i < lastRounds; i++) {
+  bid_per_round = bets + (i < remainder ? 1 : 0);
   outfile << bid_per_round << "\n";
   }
 }
 
-// ============================================================================
-// MAIN FUNCTION
-// Use this to test your code.
-// This function will be ignored by the "make test" command.
-// ============================================================================
+// Main function
 int main() {
-  // You can write code here to call your functions and see if they work.
-  // Example:
-   GenerateBids(10, 100, "test_output.txt");
+// Example
+   GenerateBids(10, 40, "test_output.txt");
   
   return 0;
 }
